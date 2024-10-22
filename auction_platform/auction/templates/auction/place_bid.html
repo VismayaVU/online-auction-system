@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+{% block content %}
+  <h2>Place Bid on {{ auction.title }}</h2>
+  <form method="POST">
+    {% csrf_token %}
+    <label for="bid_amount">Bid Amount:</label>
+    <input type="number" step="0.01" name="bid_amount" required>
+    <button type="submit">Submit Bid</button>
+  </form>
+{% endblock %}

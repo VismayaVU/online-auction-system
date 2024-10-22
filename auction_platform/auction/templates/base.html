@@ -1,0 +1,52 @@
+<!-- auction/templates/auction/base.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Auction Platform{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+</head>
+<body>
+
+    <!-- Header Section -->
+    <header>
+        <nav>
+            <ul>
+                <li><a href="{% url 'home' %}">Home</a></li>
+                <li><a href="{% url 'auction_list' %}">Auctions</a></li>
+                <li><a href="{% url 'about' %}">About</a></li>
+                <li><a href="{% url 'contact_us' %}">Contact Us</a></li>
+                {% if user.is_authenticated %}
+                <li><a href="{% url 'user_dashboard' %}">Dashboard</a></li>
+                    <li>
+                        <form id="logout-form" action="{% url 'user_logout' %}" method="post" style="display: inline;">
+                            {% csrf_token %}
+                            <button type="submit" style="border:none; background:none; color:inherit; cursor:pointer;">
+                                Logout
+                            </button>
+                        </form>
+                    </li>
+                {% else %}
+                    <li><a href="{% url 'user_login' %}">Login</a></li>
+                    <li><a href="{% url 'user_signup' %}">Signup</a></li>
+                {% endif %}
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Main Content Section -->
+    <main>
+        {% block content %}
+        <!-- Page specific content goes here -->
+        {% endblock %}
+    </main>
+
+    <!-- Footer Section -->
+    <footer>
+        <p>&copy; 2024 Auction Platform. All Rights Reserved.</p>
+    </footer>
+
+</body>
+</html>
