@@ -42,8 +42,11 @@ def user_signup(request):
         form = UserSignupForm(request.POST)
         if form.is_valid():
             user = form.save()
+            user.first_name = form.cleaned_data.get('first_name')
+            user.last_name = form.cleaned_data.get('last_name')
+            user.save()  # Save the updated user with first and last name
             login(request, user)
-            return redirect('user_dashboard')
+            return redirect('user_dashboard')  # Redirect to dashboard after signup
     else:
         form = UserSignupForm()
     return render(request, 'auction/signup.html', {'form': form})
