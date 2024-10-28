@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.conf import settings
 
 
 class Auction(models.Model):
@@ -9,16 +10,23 @@ class Auction(models.Model):
     start_time = models.DateTimeField()
     end_time = models.DateTimeField()
     status = models.CharField(max_length=100)
-    seller = models.ForeignKey(User, on_delete=models.CASCADE, related_name="seller_auctions")
+    seller = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="seller_auctions")
+    item = models.ForeignKey("Item", on_delete=models.CASCADE, related_name="auctions")  # ForeignKey to Item
     starting_bid = models.DecimalField(max_digits=10, decimal_places=2)
     current_bid = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
+
+    def __str__(self):
+        return f"Auction for {self.title} ({self.item.name})"
 
 
 class Item(models.Model):
     item_id = models.AutoField(primary_key=True)
-    auction = models.OneToOneField(Auction, on_delete=models.CASCADE)
     name = models.CharField(max_length=255)
     price = models.DecimalField(max_digits=10, decimal_places=2)
+    item_description = models.TextField()
+
+    def __str__(self):
+        return self.name
 
 
 class Bid(models.Model):

@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from .models import Auction, Bid, Review, AdminApproval, Item
 from django.contrib.auth.decorators import login_required
-from .forms import UserSignupForm
+from .forms import UserSignupForm, AuctionItemForm, AuctionForm
 from django.contrib.auth import login
 
 
@@ -67,3 +67,30 @@ def contact_us(request):
 
 def home(request):
     return render(request, 'auction/home.html')
+
+
+@login_required
+def create_auction(request):
+    if request.method == 'POST':
+        item_form = AuctionItemForm(request.POST)
+        auction_form = AuctionForm(request.POST)
+
+        if item_form.is_valid() and auction_form.is_valid():
+            # Save the item details first
+            auction_item = item_form.save()
+
+            # Save the auction details and link it to the item
+            auction = auction_form.save(commit=False)
+            auction.item = auction_item  # Associate the item with the auction
+            auction.seller = request.user  # Set the auction seller as the logged-in user
+            auction.save()
+
+            return redirect('auction_list')  # Redirect to auction list or success page
+    else:
+        item_form = AuctionItemForm()
+        auction_form = AuctionForm()
+
+    return render(request, 'auction/create_auction.html', {
+        'item_form': item_form,
+        'auction_form': auction_form,
+    })

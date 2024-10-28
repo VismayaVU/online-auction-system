@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <h2>Create Auction</h2>
+  <form method="post">
+    {% csrf_token %}
+    <h3>Item Details</h3>
+    {{ item_form.as_p }}
+
+    <h3>Auction Details</h3>
+    {{ auction_form.as_p }}
+
+    <button type="submit" class="btn btn-primary">Create Auction</button>
+  </form>
+{% endblock %}
