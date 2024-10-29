@@ -5,6 +5,13 @@ body {
     padding: 0;
     background-color: #f4f4f4;
     color: #333;
+    height: 100%;
+}
+
+html {
+    margin: 10;
+    padding: 0;
+    height: 100%;
 }
 
 header {
@@ -42,6 +49,7 @@ main {
     padding: 20px;
     background-color: white;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    flex: 1;
 }
 
 h1, h2, h3 {
@@ -53,9 +61,9 @@ footer {
     color: white;
     text-align: center;
     padding: 10px 0;
-    position: absolute;
-    bottom: 0;
     width: 100%;
+    bottom: 0;
+    margin-top: auto;
 }
 
 /* Buttons */
@@ -197,4 +205,10 @@ tr:nth-child(even) {
 
 .btn:hover {
     background-color: #45a049;
+}
+
+.wrapper {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
 }

@@ -3,6 +3,8 @@ from .models import Auction, Bid, Review, AdminApproval, Item
 from django.contrib.auth.decorators import login_required
 from .forms import UserSignupForm, AuctionItemForm, AuctionForm
 from django.contrib.auth import login
+from django.utils import timezone
+from datetime import timedelta
 
 
 def auction_list(request):
@@ -76,16 +78,25 @@ def create_auction(request):
         auction_form = AuctionForm(request.POST)
 
         if item_form.is_valid() and auction_form.is_valid():
-            # Save the item details first
-            auction_item = item_form.save()
+            # Retrieve the starting price from the form
+            starting_price = item_form.cleaned_data['starting_price']
 
-            # Save the auction details and link it to the item
+            # Save item details
+            auction_item = item_form.save(commit=False)
+            auction_item.price = starting_price  # Set the price as the starting price
+            auction_item.save()
+
+            # Save auction details and link to the item
             auction = auction_form.save(commit=False)
-            auction.item = auction_item  # Associate the item with the auction
-            auction.seller = request.user  # Set the auction seller as the logged-in user
+            auction.item = auction_item
+            auction.seller = request.user
+            auction.starting_bid = starting_price  # Set starting_bid
+            auction.status = "Pending"
+            auction.start_time = auction_form.cleaned_data.get('start_date', timezone.now())
+            auction.end_time = auction_form.cleaned_data.get('end_date', auction.start_time + timedelta(days=7))
             auction.save()
 
-            return redirect('auction_list')  # Redirect to auction list or success page
+            return redirect('auction_list')
     else:
         item_form = AuctionItemForm()
         auction_form = AuctionForm()

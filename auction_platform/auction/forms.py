@@ -16,6 +16,8 @@ class UserSignupForm(UserCreationForm):
 
 
 class AuctionItemForm(forms.ModelForm):
+    starting_price = forms.DecimalField(label="Starting Price", min_value=0)
+
     class Meta:
         model = Item
         fields = ['name', 'price', 'item_description']
@@ -24,9 +26,12 @@ class AuctionItemForm(forms.ModelForm):
             'price': 'Starting Price',
             'item_description': 'Description',
         }
+        exclude = ['price']
 
 
 class AuctionForm(forms.ModelForm):
+    title = forms.CharField(max_length=255, label="Auction Title")
+    description = forms.CharField(widget=forms.Textarea, label="Auction Description")
     start_date = forms.DateTimeField(
         initial=timezone.now,
         widget=forms.DateTimeInput(attrs={'type': 'datetime-local'}),
@@ -39,8 +44,9 @@ class AuctionForm(forms.ModelForm):
 
     class Meta:
         model = Auction
-        fields = ['start_date', 'end_date']
+        fields = ['title', 'description', 'start_date', 'end_date']
         labels = {
             'start_date': 'Start Date and Time',
             'end_date': 'End Date and Time',
         }
+        exclude = ['starting_bid']
