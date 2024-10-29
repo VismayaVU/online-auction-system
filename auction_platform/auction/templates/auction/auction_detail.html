@@ -5,5 +5,5 @@
   <p>Current Bid: {{ auction.current_bid }}</p>
   <p>Starting Bid: {{ auction.starting_bid }}</p>
   <p>Status: {{ auction.status }}</p>
-  <a href="{% url 'place_bid' auction.id %}">Place a Bid</a>
+  <a href="{% url 'place_bid' auction.auction_id %}">Place a Bid</a>
 {% endblock %}

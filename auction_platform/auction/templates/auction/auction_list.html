@@ -3,7 +3,9 @@
   <h2>Auction List</h2>
   <ul>
     {% for auction in auctions %}
-      <li><a href="{% url 'auction_detail' auction.id %}">{{ auction.title }}</a> - Current Bid: {{ auction.current_bid }}</li>
-    {% endfor %}
+    <li>
+      <a href="{% url 'auction_detail' auction.auction_id %}">{{ auction.title }}</a> - Current Bid: {{ auction.current_bid }}
+    </li>
+  {% endfor %}
   </ul>
 {% endblock %}
