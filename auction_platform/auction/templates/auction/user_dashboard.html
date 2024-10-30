@@ -4,7 +4,7 @@
   <ul>
     {% for bid in user_bids %}
       <li>
-        Auction: <a href="{% url 'auction_detail' bid.auction.id %}">{{ bid.auction.title }}</a> - Bid Amount: {{ bid.bid_amount }}
+        Auction: <a href="{% url 'auction_detail' bid.auction.auction_id %}">{{ bid.auction.title }}</a> - Bid Amount: {{ bid.bid_amount }}
       </li>
     {% endfor %}
   </ul>

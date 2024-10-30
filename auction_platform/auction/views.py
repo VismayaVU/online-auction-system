@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from .models import Auction, Bid, Review, AdminApproval, Item
+from .models import Auction, Bid, Review, AdminApproval, Item, AuctionTag
 from django.contrib.auth.decorators import login_required
 from .forms import UserSignupForm, AuctionItemForm, AuctionForm
 from django.contrib.auth import login
@@ -91,10 +91,20 @@ def create_auction(request):
             auction.item = auction_item
             auction.seller = request.user
             auction.starting_bid = starting_price  # Set starting_bid
+            auction.current_bid = starting_price - 1
             auction.status = "Pending"
             auction.start_time = auction_form.cleaned_data.get('start_date', timezone.now())
             auction.end_time = auction_form.cleaned_data.get('end_date', auction.start_time + timedelta(days=7))
             auction.save()
+
+            # Save selected tags
+            selected_tags = auction_form.cleaned_data['tags']
+            for tag in selected_tags:
+                AuctionTag.objects.create(
+                    auction_id=auction.auction_id,
+                    tag_id=tag.tag_id,
+                    assigned_on=timezone.now()
+                )
 
             return redirect('auction_list')
     else:

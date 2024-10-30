@@ -49,6 +49,9 @@ class Tag(models.Model):
     tag_id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=100)
 
+    def __str__(self):
+        return self.name
+
 
 class AuctionTag(models.Model):
     auction = models.ForeignKey(Auction, on_delete=models.CASCADE)

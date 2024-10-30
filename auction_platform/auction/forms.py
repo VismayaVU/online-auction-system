@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
-from .models import Item, Auction
+from .models import Item, Auction, Tag
 from django.utils import timezone
 
 
@@ -40,6 +40,12 @@ class AuctionForm(forms.ModelForm):
     end_date = forms.DateTimeField(
         widget=forms.DateTimeInput(attrs={'type': 'datetime-local'}),
         label="Auction End Date",
+    )
+    tags = forms.ModelMultipleChoiceField(
+        queryset=Tag.objects.all(),
+        widget=forms.CheckboxSelectMultiple,
+        required=False,
+        label="Select Tags for Auction",
     )
 
     class Meta:
