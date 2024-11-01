@@ -1,15 +1,16 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from .models import Auction, Bid, Review, AdminApproval, Item, AuctionTag
 from django.contrib.auth.decorators import login_required
 from .forms import UserSignupForm, AuctionItemForm, AuctionForm
 from django.contrib.auth import login
 from django.utils import timezone
 from datetime import timedelta
+from django.contrib.admin.views.decorators import staff_member_required
 
 
 def auction_list(request):
-    auctions = Auction.objects.all()
-    return render(request, 'auction/auction_list.html', {'auctions': auctions})
+    approved_auctions = Auction.objects.filter(status="Approved")
+    return render(request, 'auction/auction_list.html', {'auctions': approved_auctions})
 
 
 @login_required
@@ -30,13 +31,23 @@ def auction_detail(request, auction_id):
     return render(request, 'auction/auction_detail.html', {'auction': auction})
 
 
-@login_required
-def approve_item(request, item_id):
-    if request.user.is_staff:
-        item = Item.objects.get(pk=item_id)
-        AdminApproval.objects.create(admin=request.user, item=item, is_approved=True)
-        return redirect('admin_dashboard')
-    return redirect('home')
+@staff_member_required
+def approve_auction(request, item_id):
+    item = get_object_or_404(Item, id=item_id)
+    auction = get_object_or_404(Auction, item=item)
+
+    # Ensure this auction has not already been approved
+    approval, created = AdminApproval.objects.get_or_create(item=item)
+    if not approval.is_approved:
+        approval.is_approved = True
+        approval.admin = request.user  # assumes the admin is logged in
+        approval.save()
+
+        # Update the auction status to Approved
+        auction.status = "Approved"
+        auction.save()
+
+    return redirect('pending_auctions')  # Redirect to pending auctions list or admin page
 
 
 def user_signup(request):
@@ -115,3 +126,9 @@ def create_auction(request):
         'item_form': item_form,
         'auction_form': auction_form,
     })
+
+
+@staff_member_required
+def pending_auctions_admin_view(request):
+    pending_auctions = Auction.objects.filter(status="Pending")
+    return render(request, "admin/pending_auctions_admin.html", {"pending_auctions": pending_auctions})

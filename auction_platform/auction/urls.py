@@ -1,6 +1,8 @@
 from django.urls import path
 from . import views
 from django.contrib.auth import views as auth_views
+from .views import pending_auctions_admin_view
+from .admin import approve_auction_view
 
 urlpatterns = [
     path('', views.home, name='home'),
@@ -14,4 +16,7 @@ urlpatterns = [
     path('about/', views.about, name='about'),
     path('contact/', views.contact_us, name='contact_us'),
     path('create_auction/', views.create_auction, name='create_auction'),
+    path('approve/<int:item_id>/', views.approve_auction, name='approve_auction'),
+    path('admin/auction/auction/', pending_auctions_admin_view, name='pending_auctions_admin'),
+    path('admin/auction/approve/<int:auction_id>/', approve_auction_view, name='approve_auction'),
 ]

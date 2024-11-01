@@ -1,0 +1,8 @@
+{% extends "admin/base.html" %}
+
+{% block content %}
+    <div style="margin-bottom: 20px;">
+        <a href="{% url 'pending_auctions_admin' %}" class="button">View Pending Auctions</a>
+    </div>
+    {{ block.super }}
+{% endblock %}

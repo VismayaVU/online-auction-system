@@ -1,0 +1,10 @@
+{% extends "admin/base_site.html" %}
+
+{% block content %}
+    <h1>Pending Auctions</h1>
+    <ul>
+    {% for auction in pending_auctions %}
+        <li>{{ auction.title }} - Status: {{ auction.status }}</li>
+    {% endfor %}
+    </ul>
+{% endblock %}
