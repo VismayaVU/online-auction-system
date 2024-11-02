@@ -1,10 +1,24 @@
 {% extends 'base.html' %}
 {% block content %}
   <h2>Place Bid on {{ auction.title }}</h2>
-  <form method="POST">
-    {% csrf_token %}
-    <label for="bid_amount">Bid Amount:</label>
-    <input type="number" step="0.01" name="bid_amount" required>
-    <button type="submit">Submit Bid</button>
-  </form>
+
+  {% if is_creator %}
+    <!-- Display warning if the user is the auction creator -->
+    <p class="alert alert-warning">You cannot bid on your own auction.</p>
+  {% else %}
+    <!-- Display bid form for non-creators -->
+    <form method="POST">
+      {% csrf_token %}
+      <label for="bid_amount">Bid Amount:</label>
+      <input type="number" step="0.01" name="bid_amount" required>
+      <button type="submit">Submit Bid</button>
+    </form>
+  {% endif %}
+
+  <!-- Display any messages if present -->
+  {% if messages %}
+    {% for message in messages %}
+      <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+    {% endfor %}
+  {% endif %}
 {% endblock %}

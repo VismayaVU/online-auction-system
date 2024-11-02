@@ -6,6 +6,7 @@ from django.contrib.auth import login
 from django.utils import timezone
 from datetime import timedelta
 from django.contrib.admin.views.decorators import staff_member_required
+from django.contrib import messages
 
 
 def auction_list(request):
@@ -15,15 +16,23 @@ def auction_list(request):
 
 @login_required
 def place_bid(request, auction_id):
-    auction = Auction.objects.get(pk=auction_id)
+    auction = get_object_or_404(Auction, pk=auction_id)
+    is_creator = auction.seller_id == request.user.id
+
     if request.method == 'POST':
-        bid_amount = request.POST['bid_amount']
-        if float(bid_amount) > auction.current_bid:
-            Bid.objects.create(auction=auction, bidder=request.user, bid_amount=bid_amount)
-            auction.current_bid = bid_amount
-            auction.save()
-            return redirect('auction_detail', auction_id=auction_id)
-    return render(request, 'auction/place_bid.html', {'auction': auction})
+        if is_creator:
+            messages.error(request, "You cannot bid on your own auction.")
+        else:
+            bid_amount = request.POST['bid_amount']
+            if float(bid_amount) > auction.current_bid:
+                Bid.objects.create(auction=auction, bidder=request.user, bid_amount=bid_amount)
+                auction.current_bid = bid_amount
+                auction.save()
+                return redirect('auction_detail', auction_id=auction_id)
+            else:
+                messages.error(request, "Your bid must be higher than the current bid.")
+
+    return render(request, 'auction/place_bid.html', {'auction': auction, 'is_creator': is_creator})
 
 
 def auction_detail(request, auction_id):
