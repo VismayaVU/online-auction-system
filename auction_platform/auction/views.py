@@ -7,6 +7,7 @@ from django.utils import timezone
 from datetime import timedelta
 from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib import messages
+from django.db import connection
 
 
 def auction_list(request):
@@ -75,8 +76,20 @@ def user_signup(request):
 
 
 def user_dashboard(request):
-    user_bids = Bid.objects.filter(bidder=request.user)
-    return render(request, 'auction/user_dashboard.html', {'user_bids': user_bids})
+    user_id = request.user.id
+    with connection.cursor() as cursor:
+        cursor.callproc('GetUserBidStatus', [user_id])
+        bid_status_data = [
+            {
+                'auction_id': row[0],
+                'title': row[1],
+                'highest_bidder_id': row[2],
+                'highest_bidder_name': row[3],
+                'highest_bid': row[4],
+            }
+            for row in cursor.fetchall()
+        ]
+    return render(request, 'auction/user_dashboard.html', {'bid_status_data': bid_status_data})
 
 
 def about(request):

@@ -1,11 +1,22 @@
 {% extends 'base.html' %}
 {% block content %}
-  <h2>Your Active Bids</h2>
-  <ul>
-    {% for bid in user_bids %}
-      <li>
-        Auction: <a href="{% url 'auction_detail' bid.auction.auction_id %}">{{ bid.auction.title }}</a> - Bid Amount: {{ bid.bid_amount }}
-      </li>
+  <h2>Your Bidding Status</h2>
+  <table>
+    <tr>
+      <th>Auction</th>
+      <th>Highest Bidder</th>
+      <th>Highest Bid</th>
+    </tr>
+    {% for bid in bid_status_data %}
+      <tr>
+        <td>
+          <a href="{% url 'auction_detail' bid.auction_id %}">
+            {{ bid.title }}
+          </a>
+        </td>
+        <td>{{ bid.highest_bidder_name }}</td>
+        <td>{{ bid.highest_bid }}</td>
+      </tr>
     {% endfor %}
-  </ul>
+  </table>
 {% endblock %}
