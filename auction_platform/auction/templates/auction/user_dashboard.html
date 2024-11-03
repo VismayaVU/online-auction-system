@@ -1,22 +1,28 @@
 {% extends 'base.html' %}
 {% block content %}
   <h2>Your Bidding Status</h2>
-  <table>
-    <tr>
-      <th>Auction</th>
-      <th>Highest Bidder</th>
-      <th>Highest Bid</th>
-    </tr>
-    {% for bid in bid_status_data %}
+
+  {% if bid_status_data %}
+    <table>
       <tr>
-        <td>
-          <a href="{% url 'auction_detail' bid.auction_id %}">
-            {{ bid.title }}
-          </a>
-        </td>
-        <td>{{ bid.highest_bidder_name }}</td>
-        <td>{{ bid.highest_bid }}</td>
+        <th>Auction</th>
+        <th>Highest Bidder</th>
+        <th>Highest Bid</th>
       </tr>
-    {% endfor %}
-  </table>
+      {% for bid in bid_status_data %}
+        <tr>
+          <td>
+            <a href="{% url 'auction_detail' bid.auction_id %}">
+              {{ bid.title }}
+            </a>
+          </td>
+          <td>{{ bid.highest_bidder_name }}</td>
+          <td>{{ bid.highest_bid }}</td>
+        </tr>
+      {% endfor %}
+    </table>
+  {% else %}
+    <p>You have no active bids.</p>
+  {% endif %}
+
 {% endblock %}
