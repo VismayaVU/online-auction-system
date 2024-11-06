@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import Auction, Bid, Review, AdminApproval, Item, AuctionTag
 from django.contrib.auth.decorators import login_required
-from .forms import UserSignupForm, AuctionItemForm, AuctionForm
+from .forms import UserSignupForm, AuctionItemForm, AuctionForm, ProfileForm
 from django.contrib.auth import login
 from django.utils import timezone
 from datetime import timedelta
@@ -154,3 +154,29 @@ def create_auction(request):
 def pending_auctions_admin_view(request):
     pending_auctions = Auction.objects.filter(status="Pending")
     return render(request, "admin/pending_auctions_admin.html", {"pending_auctions": pending_auctions})
+
+
+@login_required
+def my_profile(request):
+    # Fetch user details from the MySQL view
+    with connection.cursor() as cursor:
+        cursor.execute("SELECT username, email, first_name, last_name FROM user_profile_view WHERE user_id = %s",
+                       [request.user.id])
+        profile_data = cursor.fetchone()
+
+    if request.method == 'POST':
+        new_username = request.POST.get('username')
+
+        # Update the username in auth_user if changed
+        if new_username and new_username != request.user.username:
+            request.user.username = new_username
+            request.user.save()
+            messages.success(request, "Username updated successfully.")
+            return redirect('my_profile')
+
+    return render(request, 'auction/my_profile.html', {
+        'username': profile_data[0],
+        'email': profile_data[1],
+        'first_name': profile_data[2],
+        'last_name': profile_data[3],
+    })

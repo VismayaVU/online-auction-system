@@ -56,3 +56,14 @@ class AuctionForm(forms.ModelForm):
             'end_date': 'End Date and Time',
         }
         exclude = ['starting_bid']
+
+
+class ProfileForm(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = ['username', 'email', 'first_name', 'last_name']
+        widgets = {
+            'email': forms.TextInput(attrs={'readonly': 'readonly'}),
+            'first_name': forms.TextInput(attrs={'readonly': 'readonly'}),
+            'last_name': forms.TextInput(attrs={'readonly': 'readonly'}),
+        }

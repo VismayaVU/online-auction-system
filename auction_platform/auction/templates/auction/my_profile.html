@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>My Profile</h2>
+
+{% if messages %}
+  {% for message in messages %}
+    <div class="alert {{ message.tags }}">{{ message }}</div>
+  {% endfor %}
+{% endif %}
+
+<form method="post">
+    {% csrf_token %}
+    <label>Username:</label>
+    <input type="text" name="username" value="{{ username }}" required><br>
+
+    <label>Email:</label>
+    <input type="text" value="{{ email }}" disabled><br>
+
+    <label>First Name:</label>
+    <input type="text" value="{{ first_name }}" disabled><br>
+
+    <label>Last Name:</label>
+    <input type="text" value="{{ last_name }}" disabled><br>
+
+    <button type="submit">Update Username</button>
+</form>
+{% endblock %}

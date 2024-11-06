@@ -21,6 +21,7 @@
                 {% if user.is_authenticated %}
                 <li><a href="{% url 'user_dashboard' %}">Dashboard</a></li>
                 <li><a href="{% url 'create_auction' %}">Create Auction</a></li>
+                <li><a href="{% url 'my_profile' %}">My Profile</a></li>
                     <li>
                         <form id="logout-form" action="{% url 'user_logout' %}" method="post" style="display: inline;">
                             {% csrf_token %}
