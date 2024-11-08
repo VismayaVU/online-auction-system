@@ -1,5 +1,86 @@
 {% extends 'base.html' %}
+
 {% block content %}
-  <h2>Contact Us</h2>
-  <p>If you have any queries, feel free to contact us at auction@example.com.</p>
+  <style>
+    /* Page Container */
+    .contact-container {
+      max-width: 800px;
+      margin: 20px auto;
+      padding: 20px;
+      background-color: #f9f9f9;
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Heading */
+    .contact-container h2 {
+      color: #2c3e50;
+      text-align: center;
+      font-size: 24px;
+      margin-bottom: 20px;
+    }
+
+    /* Paragraph */
+    .contact-container p {
+      color: #555;
+      font-size: 16px;
+      line-height: 1.6;
+      margin-bottom: 15px;
+      text-align: center;
+    }
+
+    /* Contact Details */
+    .contact-info {
+      text-align: center;
+      margin-top: 20px;
+      padding: 15px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      background-color: #ffffff;
+    }
+
+    .contact-info h3 {
+      font-size: 20px;
+      color: #2c3e50;
+      margin-bottom: 10px;
+    }
+
+    .contact-info .contact-item {
+      font-size: 16px;
+      margin: 10px 0;
+      color: #333;
+    }
+
+    /* Link Styling */
+    .contact-info a {
+      color: #1abc9c;
+      text-decoration: none;
+      transition: color 0.3s ease;
+    }
+
+    .contact-info a:hover {
+      color: #16a085;
+    }
+  </style>
+
+  <div class="contact-container">
+    <h2>Contact Us</h2>
+    <p>If you have any queries, feel free to reach out to us at <a href="mailto:contact@biddersweet.com">contact@biddersweet.com</a>.</p>
+
+    <div class="contact-info">
+      <h3>Our Team</h3>
+
+      <div class="contact-item">
+        <strong>Vismaya Vadana</strong><br>
+        Email: <a href="mailto:vadanavismaya@gmail.com">vadanavismaya@gmail.com</a><br>
+        Phone: <a href="tel:+919900122846">+91 99001 22846</a>
+      </div>
+
+      <div class="contact-item">
+        <strong>Siddharth Gandhi</strong><br>
+        Email: <a href="mailto:sid234.gandhi@gmail.com">sid234.gandhi@gmail.com</a><br>
+        Phone: <a href="tel:+916363718934">+91 63637 18934</a>
+      </div>
+    </div>
+  </div>
 {% endblock %}
