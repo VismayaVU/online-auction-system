@@ -1,9 +1,42 @@
 {% extends 'base.html' %}
 {% block content %}
-  <h2>{{ auction.title }}</h2>
-  <p>{{ auction.description }}</p>
-  <p>Current Bid: {{ auction.current_bid }}</p>
-  <p>Starting Bid: {{ auction.starting_bid }}</p>
-  <p>Status: {{ auction.status }}</p>
-  <a href="{% url 'place_bid' auction.auction_id %}">Place a Bid</a>
+  <div style="max-width: 900px; margin: 40px auto; background-color: #fff; padding: 30px; border-radius: 12px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); font-family: 'Helvetica Neue', Arial, sans-serif;">
+
+    <!-- Title -->
+    <h2 style="font-size: 2.5rem; color: #2c3e50; text-align: center; font-weight: 700; margin-bottom: 20px;">
+      {{ auction.title }}
+    </h2>
+
+    <!-- Description -->
+    <p style="font-size: 1.15rem; color: #7f8c8d; line-height: 1.6; text-align: center; margin-bottom: 30px;">
+      {{ auction.description }}
+    </p>
+
+    <!-- Auction Details Section -->
+    <div style="display: flex; flex-wrap: wrap; justify-content: space-between; margin-bottom: 30px;">
+      <div style="flex-basis: 48%; padding: 20px; background-color: #f8f8f8; border-radius: 10px; box-shadow: 0 6px 15px rgba(0, 0, 0, 0.08);">
+        <p style="font-size: 1.2rem; color: #34495e; font-weight: 500; margin-bottom: 10px;">Current Bid</p>
+        <p style="font-size: 1.6rem; color: #27ae60; font-weight: 600;">${{ auction.current_bid }}</p>
+      </div>
+
+      <div style="flex-basis: 48%; padding: 20px; background-color: #f8f8f8; border-radius: 10px; box-shadow: 0 6px 15px rgba(0, 0, 0, 0.08);">
+        <p style="font-size: 1.2rem; color: #34495e; font-weight: 500; margin-bottom: 10px;">Starting Bid</p>
+        <p style="font-size: 1.6rem; color: #3498db; font-weight: 600;">${{ auction.starting_bid }}</p>
+      </div>
+
+      <div style="flex-basis: 48%; padding: 20px; background-color: #f8f8f8; border-radius: 10px; box-shadow: 0 6px 15px rgba(0, 0, 0, 0.08);">
+        <p style="font-size: 1.2rem; color: #34495e; font-weight: 500; margin-bottom: 10px;">Status</p>
+        <p style="font-size: 1.6rem; color: #e67e22; font-weight: 600;">{{ auction.status }}</p>
+      </div>
+    </div>
+
+    <!-- Place Bid Button -->
+    <div style="text-align: center; margin-top: 40px;">
+      <a href="{% url 'place_bid' auction.auction_id %}"
+         style="display: inline-block; background-color: #2980b9; color: white; padding: 14px 36px; font-size: 1.2rem; font-weight: 500; text-decoration: none; border-radius: 6px; transition: background-color 0.3s ease; border: none;">
+        Place a Bid
+      </a>
+    </div>
+
+  </div>
 {% endblock %}
