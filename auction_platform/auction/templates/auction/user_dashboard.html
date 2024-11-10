@@ -1,28 +1,48 @@
 {% extends 'base.html' %}
-{% block content %}
-  <h2>Your Bidding Status</h2>
 
-  {% if bid_status_data %}
-    <table>
-      <tr>
-        <th>Auction</th>
-        <th>Highest Bidder</th>
-        <th>Highest Bid</th>
-      </tr>
-      {% for bid in bid_status_data %}
-        <tr>
-          <td>
-            <a href="{% url 'auction_detail' bid.auction_id %}">
-              {{ bid.title }}
-            </a>
-          </td>
-          <td>{{ bid.highest_bidder_name }}</td>
-          <td>{{ bid.highest_bid }}</td>
-        </tr>
-      {% endfor %}
-    </table>
-  {% else %}
-    <p>You have no active bids.</p>
-  {% endif %}
+{% block content %}
+    <div style="background: linear-gradient(135deg, #f0f4f8, #e6e9ef); padding: 50px 0;">
+        
+        <!-- Main Container -->
+        <div style="max-width: 1000px; margin: 0 auto; background-color: #fff; padding: 40px; border-radius: 12px; box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);">
+            
+            <!-- Heading -->
+            <h2 style="font-size: 30px; font-weight: 600; color: #333; text-align: center; margin-bottom: 30px; border-bottom: 2px solid #007bff; padding-bottom: 15px;">
+                Your Bidding Status
+            </h2>
+            
+            {% if bid_status_data %}
+                <!-- Table -->
+                <table style="width: 100%; border-collapse: collapse;">
+                    <thead>
+                        <tr>
+                            <th style="padding: 16px 20px; background-color: #007bff; color: white; text-align: left; font-size: 16px; border-radius: 10px 10px 0 0; font-weight: 500;">Auction</th>
+                            <th style="padding: 16px 20px; background-color: #007bff; color: white; text-align: left; font-size: 16px; border-radius: 10px 10px 0 0; font-weight: 500;">Highest Bidder</th>
+                            <th style="padding: 16px 20px; background-color: #007bff; color: white; text-align: left; font-size: 16px; border-radius: 10px 10px 0 0; font-weight: 500;">Highest Bid</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for bid in bid_status_data %}
+                            <tr style="border-bottom: 1px solid #f1f1f1; transition: background-color 0.3s;">
+                                <td style="padding: 16px 20px; font-size: 14px;">
+                                    <a href="{% url 'auction_detail' bid.auction_id %}" style="color: #007bff; text-decoration: none; font-weight: bold; transition: color 0.3s;">{{ bid.title }}</a>
+                                </td>
+                                <td style="padding: 16px 20px; font-size: 14px; color: #333;">
+                                    {{ bid.highest_bidder_name }}
+                                </td>
+                                <td style="padding: 16px 20px; font-size: 14px; color: #333;">
+                                    ${{ bid.highest_bid }}
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            {% else %}
+                <div style="text-align: center; padding: 20px;">
+                    <p style="font-size: 16px; color: #777;">You have no active bids. Explore new auctions to place your bid!</p>
+                </div>
+            {% endif %}
+        </div>
+    </div>
 
 {% endblock %}
