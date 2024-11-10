@@ -1,24 +1,66 @@
 {% extends 'base.html' %}
+
 {% block content %}
-  <h2>Place Bid on {{ auction.title }}</h2>
+  <div style="max-width: 900px; margin: 50px auto; padding: 30px; background: #ffffff; border-radius: 12px; box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1); font-family: 'Roboto', sans-serif;">
 
-  {% if is_creator %}
-    <!-- Display warning if the user is the auction creator -->
-    <p class="alert alert-warning">You cannot bid on your own auction.</p>
-  {% else %}
-    <!-- Display bid form for non-creators -->
-    <form method="POST">
-      {% csrf_token %}
-      <label for="bid_amount">Bid Amount:</label>
-      <input type="number" step="0.01" name="bid_amount" required>
-      <button type="submit">Submit Bid</button>
-    </form>
-  {% endif %}
+    <!-- Page Title -->
+    <h2 style="font-size: 2.5rem; color: #2d3436; text-align: center; font-weight: 700; margin-bottom: 30px; letter-spacing: 0.5px;">
+      Place Your Bid on <strong>{{ auction.title }}</strong>
+    </h2>
 
-  <!-- Display any messages if present -->
-  {% if messages %}
-    {% for message in messages %}
-      <div class="alert alert-{{ message.tags }}">{{ message }}</div>
-    {% endfor %}
-  {% endif %}
+    {% if is_creator %}
+      <!-- Warning if the user is the auction creator -->
+      <div style="background-color: #ffeb3b; padding: 15px; border-radius: 8px; text-align: center; font-size: 1.1rem; color: #2c3e50; font-weight: 600; margin-bottom: 30px;">
+        <p>You cannot bid on your own auction.</p>
+      </div>
+    {% else %}
+      <!-- Bid Form for non-creators -->
+      <form method="POST" style="display: flex; flex-direction: column; gap: 20px; max-width: 400px; margin: 0 auto;">
+        {% csrf_token %}
+
+        <label for="bid_amount" style="font-size: 1.1rem; color: #34495e; font-weight: 500;">
+          Enter Your Bid Amount:
+        </label>
+
+        <input type="number" name="bid_amount" step="0.01" required placeholder="Enter bid amount" style="width: 100%; padding: 15px; font-size: 1.2rem; border-radius: 8px; border: 2px solid #dfe6e9; transition: border 0.3s ease-in-out; outline: none;">
+
+        <!-- Custom Button Style -->
+        <button type="submit" style="background: linear-gradient(135deg, #2980b9, #8e44ad); color: white; padding: 14px 30px; font-size: 1.2rem; font-weight: 500; border: none; border-radius: 8px; cursor: pointer; transition: transform 0.2s ease-in-out;">
+          Place Bid
+        </button>
+      </form>
+    {% endif %}
+
+    <!-- Display any messages if present -->
+    {% if messages %}
+      <div style="margin-top: 40px;">
+        {% for message in messages %}
+          <div class="alert alert-{{ message.tags }}" style="padding: 15px; margin-top: 10px; border-radius: 10px; font-size: 1rem;">
+            {{ message }}
+          </div>
+        {% endfor %}
+      </div>
+    {% endif %}
+
+  </div>
+
+  <!-- Adding Hover Effects on the Form Fields -->
+  <script>
+    document.querySelector('input[name="bid_amount"]').addEventListener('focus', function() {
+      this.style.borderColor = '#3498db'; // Focused state
+    });
+
+    document.querySelector('input[name="bid_amount"]').addEventListener('blur', function() {
+      this.style.borderColor = '#dfe6e9'; // Unfocused state
+    });
+
+    // Add hover effect to the submit button
+    const submitButton = document.querySelector('button[type="submit"]');
+    submitButton.addEventListener('mouseenter', function() {
+      this.style.transform = 'scale(1.05)';
+    });
+    submitButton.addEventListener('mouseleave', function() {
+      this.style.transform = 'scale(1)';
+    });
+  </script>
 {% endblock %}
