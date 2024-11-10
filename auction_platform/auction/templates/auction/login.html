@@ -1,9 +1,22 @@
 {% extends 'base.html' %}
+
 {% block content %}
-  <h2>Login</h2>
-  <form method="POST">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Login</button>
-  </form>
+  <section style="display: flex; justify-content: center; align-items: center; height: 90vh; background: linear-gradient(to right, #1abc9c, #3498db);">
+    <div style="width: 100%; max-width: 400px; background: white; padding: 50px; box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); border-radius: 10px;">
+      <h2 style="text-align: center; color: #34495e; font-size: 1.8em; margin-bottom: 15px;">Welcome Back!</h2>
+      <p style="text-align: center; color: #666; font-size: 1.1em; margin-bottom: 30px;">
+        Login to continue exploring and bidding on exciting items.
+      </p>
+      <form method="POST" style="display: flex; flex-direction: column;">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" style="background-color: #1abc9c; color: white; padding: 12px; border: none; border-radius: 5px; font-size: 1.1em; cursor: pointer; margin-top: 20px; transition: background-color 0.3s ease;">
+          Login
+        </button>
+      </form>
+      <p style="text-align: center; margin-top: 20px; color: #666; font-size: 0.95em;">
+        New to Bidder Sweet? <a href="{% url 'user_signup' %}" style="color: #3498db; text-decoration: underline;">Sign Up Here</a>
+      </p>
+    </div>
+  </section>
 {% endblock %}
