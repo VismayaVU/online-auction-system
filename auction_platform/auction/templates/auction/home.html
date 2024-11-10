@@ -1,9 +1,42 @@
-<!-- auction/templates/auction/home.html -->
 {% extends 'base.html' %}
 
-{% block title %}Home - Auction Platform{% endblock %}
+{% block title %}Home - Bidder Sweet{% endblock %}
 
 {% block content %}
-    <h1>Welcome to the Auction Platform</h1>
-    <p>Explore various auctions and bid on your favorite items!</p>
+    <!-- Welcome Banner Section -->
+    <section style="text-align: center; background-color: #f7f9fc; padding: 80px 20px;">
+        <h1 style="font-size: 48px; color: #2c3e50; margin-bottom: 20px;">Welcome to Bidder Sweet</h1>
+        <p style="font-size: 22px; color: #555; max-width: 600px; margin: 0 auto; line-height: 1.6;">
+            Discover a world of exciting auctions and bid on unique items. From rare collectibles to everyday treasures, there's something for everyone. Start exploring and find your next favorite item today!
+        </p>
+        <a href="{% url 'auction_list' %}" style="display: inline-block; background-color: #1abc9c; color: white; padding: 15px 30px; font-size: 18px; text-decoration: none; border-radius: 5px; margin-top: 30px; transition: background-color 0.3s ease;">
+            Explore Auctions
+        </a>
+    </section>
+
+    <!-- About Us Section -->
+    <section style="padding: 60px 20px; background-color: #ffffff;">
+        <h2 style="text-align: center; color: #2c3e50; font-size: 36px; margin-bottom: 20px;">About Us</h2>
+        <p style="font-size: 20px; color: #666; max-width: 700px; margin: 0 auto; text-align: center; line-height: 1.6;">
+            Bidder Sweet is dedicated to providing a secure and easy-to-use platform for auction enthusiasts. We connect buyers and sellers through a trusted system that ensures fair bidding and an engaging experience for everyone.
+        </p>
+    </section>
+
+    <!-- Call to Action Section (Only for Non-Authenticated Users) -->
+    {% if not user.is_authenticated %}
+    <section style="text-align: center; background-color: #2c3e50; padding: 60px 20px; color: white;">
+        <h2 style="font-size: 32px; margin-bottom: 20px;">Join Our Community</h2>
+        <p style="font-size: 20px; max-width: 600px; margin: 0 auto; line-height: 1.6;">
+            Sign up today to start bidding, selling, and discovering the endless possibilities in the world of online auctions.
+        </p>
+        <div style="margin-top: 20px;">
+            <a href="{% url 'user_signup' %}" style="display: inline-block; background-color: #1abc9c; color: white; padding: 15px 30px; font-size: 18px; text-decoration: none; border-radius: 5px; margin-right: 10px; transition: background-color 0.3s ease;">
+                Sign Up
+            </a>
+            <a href="{% url 'user_login' %}" style="display: inline-block; background-color: #3498db; color: white; padding: 15px 30px; font-size: 18px; text-decoration: none; border-radius: 5px; transition: background-color 0.3s ease;">
+                Login
+            </a>
+        </div>
+    </section>
+    {% endif %}
 {% endblock %}
