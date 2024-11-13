@@ -2,7 +2,7 @@
 
 from django.urls import path
 from django.contrib import admin
-from .models import Auction, AdminApproval, Admin
+from .models import Auction, AdminApproval, Admin, User, Item
 from django.shortcuts import render, redirect, get_object_or_404
 from django.utils import timezone
 from django.contrib import messages
@@ -61,7 +61,20 @@ class AuctionAdmin(admin.ModelAdmin):
     approve_auctions.short_description = "Approve selected auctions"
 
 
+class UserAdmin(admin.ModelAdmin):
+    list_display = ('username', 'email', 'first_name', 'last_name')  # Customize as needed
+    search_fields = ('username', 'email')
+
+
+class ItemAdmin(admin.ModelAdmin):
+    list_display = ('item_id', 'name', 'price')  # Customize as needed
+    search_fields = ('name',)
+
+
+# Register the models with custom admin classes
+admin.site.register(Item, ItemAdmin)
 admin.site.register(Auction, AuctionAdmin)
+
 
 # Custom admin URLs
 original_admin_get_urls = admin.site.get_urls
