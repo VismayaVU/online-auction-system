@@ -39,6 +39,8 @@
       <div style="display: flex; flex-direction: column;">
         <label for="id_password1" style="font-size: 1.1rem; color: #34495e; font-weight: 500;">Password</label>
         <input type="password" name="password1" id="id_password1" required placeholder="Enter your password" style="padding: 15px; font-size: 1.2rem; border-radius: 8px; border: 2px solid #dfe6e9; transition: border 0.3s ease-in-out; outline: none;">
+        <!-- Password Strength Message -->
+        <small id="password-strength-message" style="color: #e74c3c; font-size: 0.9rem; margin-top: 5px; display: none;">Weak password</small>
       </div>
 
       <!-- Confirm Password Field -->
@@ -57,7 +59,7 @@
     </p>
   </div>
 
-  <!-- Adding Hover Effects -->
+  <!-- Adding Hover and Password Strength Effects -->
   <script>
     document.querySelectorAll('input').forEach(input => {
       input.addEventListener('focus', function() {
@@ -75,6 +77,22 @@
     });
     signupButton.addEventListener('mouseleave', function() {
       this.style.transform = 'scale(1)';
+    });
+
+    // Password strength checker
+    const passwordInput = document.getElementById('id_password1');
+    const passwordMessage = document.getElementById('password-strength-message');
+
+    passwordInput.addEventListener('input', function() {
+      const password = passwordInput.value;
+      const isWeak = password.length < 8 || !/[A-Z]/.test(password) || !/[a-z]/.test(password) || !/[0-9]/.test(password);
+
+      if (isWeak) {
+        passwordMessage.style.display = 'block';
+        passwordMessage.textContent = 'Password should be at least 8 characters long, contain uppercase, lowercase letters, and a number.';
+      } else {
+        passwordMessage.style.display = 'none';
+      }
     });
   </script>
 {% endblock %}
