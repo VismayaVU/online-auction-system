@@ -67,3 +67,45 @@ class AdminApproval(models.Model):
     approved_on = models.DateTimeField(auto_now_add=True)
     is_approved = models.BooleanField(default=False)
 
+
+# Model for storing deleted items
+class DeletedItem(models.Model):
+    item_id = models.IntegerField()  # Keeping original item_id for reference
+    name = models.CharField(max_length=255)
+    price = models.DecimalField(max_digits=10, decimal_places=2)
+    item_description = models.TextField()
+    deleted_on = models.DateTimeField(auto_now_add=True)  # Timestamp for deletion
+
+    def __str__(self):
+        return self.name
+
+
+# Model for storing deleted auctions
+class DeletedAuction(models.Model):
+    auction_id = models.IntegerField()  # Keeping original auction_id for reference
+    title = models.CharField(max_length=200)
+    description = models.TextField()
+    start_time = models.DateTimeField()
+    end_time = models.DateTimeField()
+    status = models.CharField(max_length=100)
+    starting_bid = models.DecimalField(max_digits=10, decimal_places=2)
+    current_bid = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
+    seller_id = models.IntegerField()  # Store seller_id directly or link to user model if needed
+    item_id = models.IntegerField()  # Keep reference to the original item_id
+    deleted_on = models.DateTimeField(auto_now_add=True)  # Timestamp for deletion
+
+    def __str__(self):
+        return self.title
+
+
+# Model for storing deleted bids
+class DeletedBid(models.Model):
+    bid_id = models.IntegerField()  # Keeping original bid_id for reference
+    bid_time = models.DateTimeField()
+    bid_amount = models.DecimalField(max_digits=10, decimal_places=2)
+    auction_id = models.IntegerField()  # Keep reference to the original auction_id
+    bidder_id = models.IntegerField()  # Store bidder_id directly or link to user model if needed
+    deleted_on = models.DateTimeField(auto_now_add=True)  # Timestamp for deletion
+
+    def __str__(self):
+        return f"Deleted Bid: {self.bid_id} on Auction {self.auction_id}"

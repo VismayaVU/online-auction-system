@@ -1,0 +1,26 @@
+{% extends 'admin/base_site.html' %}
+{% block content %}
+  <h1>Deleted Bids</h1>
+  <table style="width: 100%; border-collapse: collapse; margin-top: 20px;">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Bidder</th>
+        <th>Auction</th>
+        <th>Bid Amount</th>
+        <th>Deleted On</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for bid in deleted_bids %}
+      <tr>
+        <td>{{ bid.id }}</td>
+        <td>{{ bid.bidder }}</td>
+        <td>{{ bid.auction }}</td>
+        <td>${{ bid.bid_amount }}</td>
+        <td>{{ bid.deleted_on }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% endblock %}

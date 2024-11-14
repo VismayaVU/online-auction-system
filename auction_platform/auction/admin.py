@@ -2,7 +2,7 @@
 
 from django.urls import path
 from django.contrib import admin
-from .models import Auction, AdminApproval, Admin, User, Item
+from .models import Auction, AdminApproval, Admin, User, Item, DeletedItem, DeletedAuction, DeletedBid
 from django.shortcuts import render, redirect, get_object_or_404
 from django.utils import timezone
 from django.contrib import messages
@@ -118,6 +118,11 @@ class ItemAdmin(admin.ModelAdmin):
 # Register the models with custom admin classes
 admin.site.register(Item, ItemAdmin)
 admin.site.register(Auction, AuctionAdmin)
+
+
+admin.site.register(DeletedItem)
+admin.site.register(DeletedAuction)
+admin.site.register(DeletedBid)
 
 
 # Custom admin URLs

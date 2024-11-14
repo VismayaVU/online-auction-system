@@ -1,0 +1,26 @@
+{% extends 'admin/base_site.html' %}
+{% block content %}
+  <h1>Deleted Items</h1>
+  <table style="width: 100%; border-collapse: collapse; margin-top: 20px;">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Category</th>
+        <th>Description</th>
+        <th>Deleted On</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for item in deleted_items %}
+      <tr>
+        <td>{{ item.id }}</td>
+        <td>{{ item.name }}</td>
+        <td>{{ item.category }}</td>
+        <td>{{ item.description }}</td>
+        <td>{{ item.deleted_on }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% endblock %}
