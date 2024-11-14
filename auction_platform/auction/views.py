@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from .models import Auction, Bid, AdminApproval, Item, AuctionTag
+from .models import Auction, Bid, AdminApproval, Item, AuctionTag, User
 from django.contrib.auth.decorators import login_required
 from .forms import UserSignupForm, AuctionItemForm, AuctionForm, ProfileForm
 from django.contrib.auth import login
@@ -8,6 +8,8 @@ from datetime import timedelta
 from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib import messages
 from django.db import connection
+from django.contrib.auth.decorators import user_passes_test
+from django import forms
 
 
 def auction_list(request):
@@ -180,3 +182,33 @@ def my_profile(request):
         'first_name': profile_data[2],
         'last_name': profile_data[3],
     })
+
+
+# Create a signup form
+class AdminSignupForm(forms.ModelForm):
+    password = forms.CharField(widget=forms.PasswordInput)
+
+    class Meta:
+        model = User
+        fields = ['username', 'email', 'password', 'first_name', 'last_name']
+
+    def save(self, commit=True):
+        user = super().save(commit=False)
+        user.set_password(self.cleaned_data["password"])
+        user.is_staff = True  # Set as staff to access the admin site
+        user.is_superuser = True  # Set as superuser if needed
+        if commit:
+            user.save()
+        return user
+
+# Limit access to superusers only
+@user_passes_test(lambda u: u.is_superuser)
+def admin_signup(request):
+    if request.method == "POST":
+        form = AdminSignupForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('/admin/')
+    else:
+        form = AdminSignupForm()
+    return render(request, 'admin/admin_signup.html', {'form': form})

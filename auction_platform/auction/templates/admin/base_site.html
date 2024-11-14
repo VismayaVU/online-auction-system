@@ -6,3 +6,6 @@
     </div>
     {{ block.super }}
 {% endblock %}
+{% if show_admin_signup %}
+    <a href="{% url 'admin_signup' %}" class="btn btn-secondary">Sign up New Admin</a>
+{% endif %}

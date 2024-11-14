@@ -20,4 +20,5 @@ urlpatterns = [
     path('admin/auction/auction/', pending_auctions_admin_view, name='pending_auctions_admin'),
     path('admin/auction/approve/<int:auction_id>/', approve_auction_view, name='approve_auction'),
     path('profile/', views.my_profile, name='my_profile'),
+    path('admin/signup/', views.admin_signup, name='admin_signup'),
 ]
