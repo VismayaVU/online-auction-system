@@ -22,12 +22,15 @@ def place_bid(request, auction_id):
     auction = get_object_or_404(Auction, pk=auction_id)
     is_creator = auction.seller_id == request.user.id
 
+    current_bid = auction.current_bid if auction.current_bid is not None else float(auction.starting_bid) - 0.01
+    current_bid = float(current_bid)
+
     if request.method == 'POST':
         if is_creator:
             messages.error(request, "You cannot bid on your own auction.")
         else:
             bid_amount = request.POST['bid_amount']
-            if float(bid_amount) > auction.current_bid:
+            if float(bid_amount) > current_bid:
                 Bid.objects.create(auction=auction, bidder=request.user, bid_amount=bid_amount)
                 auction.current_bid = bid_amount
                 auction.save()
@@ -126,7 +129,7 @@ def create_auction(request):
             auction.item = auction_item
             auction.seller = request.user
             auction.starting_bid = starting_price  # Set starting_bid
-            auction.current_bid = starting_price - 1
+            auction.current_bid = None
             auction.status = "Pending"
             auction.start_time = auction_form.cleaned_data.get('start_date', timezone.now())
             auction.end_time = auction_form.cleaned_data.get('end_date', auction.start_time + timedelta(days=7))
@@ -200,6 +203,7 @@ class AdminSignupForm(forms.ModelForm):
         if commit:
             user.save()
         return user
+
 
 # Limit access to superusers only
 @user_passes_test(lambda u: u.is_superuser)

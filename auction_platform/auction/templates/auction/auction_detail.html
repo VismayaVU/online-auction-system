@@ -16,7 +16,13 @@
     <div style="display: flex; flex-wrap: wrap; justify-content: space-between; margin-bottom: 30px;">
       <div style="flex-basis: 48%; padding: 20px; background-color: #f8f8f8; border-radius: 10px; box-shadow: 0 6px 15px rgba(0, 0, 0, 0.08);">
         <p style="font-size: 1.2rem; color: #34495e; font-weight: 500; margin-bottom: 10px;">Current Bid</p>
-        <p style="font-size: 1.6rem; color: #27ae60; font-weight: 600;">${{ auction.current_bid }}</p>
+        <p style="font-size: 1.6rem; color: #27ae60; font-weight: 600;">
+          {% if auction.current_bid %}
+            ${{ auction.current_bid }}
+          {% else %}
+            N/A
+          {% endif %}
+        </p>
       </div>
 
       <div style="flex-basis: 48%; padding: 20px; background-color: #f8f8f8; border-radius: 10px; box-shadow: 0 6px 15px rgba(0, 0, 0, 0.08);">

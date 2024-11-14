@@ -63,7 +63,13 @@
       <div class="auction-card">
         <h3><a href="{% url 'auction_detail' auction.auction_id %}">{{ auction.title }}</a></h3>
         <p class="description">{{ auction.description|truncatewords:15 }}</p>
-        <p><strong>Current Bid:</strong> {{ auction.current_bid }}</p>
+        <p><strong>Current Bid:</strong>
+            {% if auction.current_bid %}
+                {{ auction.current_bid }}
+            {% else %}
+                N/A
+            {% endif %}
+        </p>
         <p><strong>Starting Bid:</strong> {{ auction.starting_bid }}</p>
         <a href="{% url 'auction_detail' auction.auction_id %}" class="view-details-button">View Details</a>
       </div>
