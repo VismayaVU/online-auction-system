@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.conf import settings
+from django.utils import timezone
 
 
 class Auction(models.Model):
@@ -74,10 +75,10 @@ class DeletedItem(models.Model):
     name = models.CharField(max_length=255)
     price = models.DecimalField(max_digits=10, decimal_places=2)
     item_description = models.TextField()
-    deleted_on = models.DateTimeField(auto_now_add=True)  # Timestamp for deletion
+    deleted_on = models.DateTimeField(null=True, blank=True, default=timezone.now)  # Timestamp for deletion
 
     def __str__(self):
-        return self.name
+        return f"Item ID:{self.item_id} || Name:{self.name} || Price:{self.price} || Desc:{self.item_description}"
 
 
 # Model for storing deleted auctions
@@ -92,10 +93,10 @@ class DeletedAuction(models.Model):
     current_bid = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
     seller_id = models.IntegerField()  # Store seller_id directly or link to user model if needed
     item_id = models.IntegerField()  # Keep reference to the original item_id
-    deleted_on = models.DateTimeField(auto_now_add=True)  # Timestamp for deletion
+    deleted_on = models.DateTimeField(null=True, blank=True, default=timezone.now)  # Timestamp for deletion
 
     def __str__(self):
-        return self.title
+        return f"AuctionID:{self.auction_id} || Name:{self.title} || Starting Bid:{self.starting_bid} || Current Bid:{self.current_bid} || SellerID:{self.seller_id} || ItemID:{self.item_id}"
 
 
 # Model for storing deleted bids
@@ -105,7 +106,7 @@ class DeletedBid(models.Model):
     bid_amount = models.DecimalField(max_digits=10, decimal_places=2)
     auction_id = models.IntegerField()  # Keep reference to the original auction_id
     bidder_id = models.IntegerField()  # Store bidder_id directly or link to user model if needed
-    deleted_on = models.DateTimeField(auto_now_add=True)  # Timestamp for deletion
+    deleted_on = models.DateTimeField(null=True, blank=True, default=timezone.now)  # Timestamp for deletion
 
     def __str__(self):
-        return f"Deleted Bid: {self.bid_id} on Auction {self.auction_id}"
+        return f"BidID:{self.bid_id} || Bid Amount:{self.bid_amount} || AuctionID:{self.auction_id} || BidderID:{self.bidder_id}"
