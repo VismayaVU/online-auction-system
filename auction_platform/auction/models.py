@@ -37,14 +37,6 @@ class Bid(models.Model):
     bid_amount = models.DecimalField(max_digits=10, decimal_places=2)
 
 
-class Review(models.Model):
-    review_id = models.AutoField(primary_key=True)
-    auction = models.ForeignKey(Auction, on_delete=models.CASCADE)
-    reviewer = models.ForeignKey(User, on_delete=models.CASCADE, related_name="reviews")
-    rating = models.IntegerField()
-    reviewed_on = models.DateTimeField(auto_now_add=True)
-
-
 class Tag(models.Model):
     tag_id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=100)

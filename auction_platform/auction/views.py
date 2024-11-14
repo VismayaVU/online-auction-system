@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from .models import Auction, Bid, Review, AdminApproval, Item, AuctionTag
+from .models import Auction, Bid, AdminApproval, Item, AuctionTag
 from django.contrib.auth.decorators import login_required
 from .forms import UserSignupForm, AuctionItemForm, AuctionForm, ProfileForm
 from django.contrib.auth import login

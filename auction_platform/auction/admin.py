@@ -8,6 +8,7 @@ from django.utils import timezone
 from django.contrib import messages
 from django.utils.html import format_html
 from django.urls import reverse
+from django.db import connection
 
 
 def approve_auction_view(request, auction_id):
@@ -60,15 +61,58 @@ class AuctionAdmin(admin.ModelAdmin):
 
     approve_auctions.short_description = "Approve selected auctions"
 
+    def delete_model(self, request, obj):
+        # Save the deleted auction record to deleted_auctions
+        with connection.cursor() as cursor:
+            cursor.execute(
+                """
+                INSERT INTO deleted_auctions (auction_id, title, description, start_time, end_time, status, starting_bid, current_bid, seller_id, item_id, deleted_at)
+                VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+                """,
+                [
+                    obj.auction_id, obj.title, obj.description, obj.start_time,
+                    obj.end_time, obj.status, obj.starting_bid, obj.current_bid,
+                    obj.seller_id, obj.item_id, timezone.now()
+                ]
+            )
+        # Delete the original auction
+        super().delete_model(request, obj)
+
 
 class UserAdmin(admin.ModelAdmin):
-    list_display = ('username', 'email', 'first_name', 'last_name')  # Customize as needed
+    list_display = ('username', 'email', 'first_name', 'last_name')
     search_fields = ('username', 'email')
+
+    def delete_model(self, request, obj):
+        # Save the deleted user record to deleted_users
+        with connection.cursor() as cursor:
+            cursor.execute(
+                """
+                INSERT INTO deleted_users (user_id, username, email, first_name, last_name, deleted_at)
+                VALUES (%s, %s, %s, %s, %s, %s)
+                """,
+                [obj.id, obj.username, obj.email, obj.first_name, obj.last_name, timezone.now()]
+            )
+        # Delete the original user
+        super().delete_model(request, obj)
 
 
 class ItemAdmin(admin.ModelAdmin):
-    list_display = ('item_id', 'name', 'price')  # Customize as needed
+    list_display = ('item_id', 'name', 'price')
     search_fields = ('name',)
+
+    def delete_model(self, request, obj):
+        # Save the deleted item record to deleted_items
+        with connection.cursor() as cursor:
+            cursor.execute(
+                """
+                INSERT INTO deleted_items (item_id, name, description, starting_price, deleted_at)
+                VALUES (%s, %s, %s, %s, %s)
+                """,
+                [obj.item_id, obj.name, obj.description, obj.price, timezone.now()]
+            )
+        # Delete the original item
+        super().delete_model(request, obj)
 
 
 # Register the models with custom admin classes
